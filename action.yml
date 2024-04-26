@@ -18,9 +18,9 @@ runs:
       run: echo "::set-output name=filesNo::$(echo $RANDOM)"
       shell: bash
 
-    - name: run ls
-      run: ls pwd
-      shell: bash
+    # - name: run ls
+    #   run: ls pwd
+    #   shell: bash
 
     - name: file location
       run: ls {{ github.action_path }}
