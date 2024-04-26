@@ -1,42 +1,21 @@
-name: "Hello World"
-description: "Greet someone"
+name: 'File Copy'
+description: 'Pretends to copy some files and return the number of files copied'
 inputs:
-  who-to-greet: # id of input
-    description: "Who to greet"
+  destinationFolder:  # path
+    description: 'The folder to copy the files to'
     required: true
-    default: "World"
+    default: '~'
 outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-number }}
+  copied-files: 
+    description: "Number of files copied"
+    value: ${{ steps.random-number-generator.outputs.filesNo }}
 runs:
   using: "composite"
-  steps:
-    - name: Set Greeting
-      run: echo "Hello $INPUT_WHO_TO_GREET."
+  steps: 
+    - run: ${{ github.action_path }}/ExecuteSomething.sh
       shell: bash
-      env:
-        INPUT_WHO_TO_GREET: ${{ inputs.who-to-greet }}
-
-    - name: Random Number Generator
-      id: random-number-generator
-      run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
+    - id: random-number-generator
+      run: echo "::set-output name=filesNo::$(echo $RANDOM)"
       shell: bash
-
-    # - name: Set GitHub Path
-    #   run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
-    #   shell: bash
-    #   env:
-    #     GITHUB_ACTION_PATH: ${{ github.action_path }}
-
-    - name: Show path
-      run: echo $GITHUB_ACTION_PATH
-      shell: bash
-
-    - name: ls path
-      run: ls $GITHUB_ACTION_PATH
-      shell: bash
-
-    - name: Run goodbye.sh
-      run: ${{ github.action_path }}/goodbye.sh
+    - run: ${{ github.action_path }}/CopyFiles.sh
       shell: bash
